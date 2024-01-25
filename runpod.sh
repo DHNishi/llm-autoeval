@@ -20,14 +20,14 @@ if [ "$BENCHMARK" == "nous" ]; then
     cd lm-evaluation-harness
     pip install -e .
 
-    benchmark="agieval"
-    python main.py \
-        --model hf-causal \
-        --model_args pretrained=$MODEL,trust_remote_code=$TRUST_REMOTE_CODE \
-        --tasks agieval_aqua_rat,agieval_logiqa_en,agieval_lsat_ar,agieval_lsat_lr,agieval_lsat_rc,agieval_sat_en,agieval_sat_en_without_passage,agieval_sat_math \
-        --device cuda:0 \
-        --batch_size auto \
-        --output_path ./${benchmark}.json
+    # benchmark="agieval"
+    # python main.py \
+    #     --model hf-causal \
+    #     --model_args pretrained=$MODEL,trust_remote_code=$TRUST_REMOTE_CODE \
+    #     --tasks agieval_aqua_rat,agieval_logiqa_en,agieval_lsat_ar,agieval_lsat_lr,agieval_lsat_rc,agieval_sat_en,agieval_sat_en_without_passage,agieval_sat_math \
+    #     --device cuda:0 \
+    #     --batch_size auto \
+    #     --output_path ./${benchmark}.json
 
     benchmark="gpt4all"
     python main.py \
