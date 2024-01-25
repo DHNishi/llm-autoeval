@@ -60,7 +60,7 @@ def calculate_average(data, task):
             return get_acc_norm(data)
         if task == "arc":
             return data["results"]["arc_challenge"]["acc_norm,none"] * 100
-        elif task == "bigbench":
+        elif task == "bbh-cot":
             return get_mcg(data)
 
     raise NotImplementedError(f"Could not find task {task} for benchmark {BENCHMARK}")
