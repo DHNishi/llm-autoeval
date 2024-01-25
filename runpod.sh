@@ -61,10 +61,10 @@ if [ "$BENCHMARK" == "nous" ]; then
     
     python ../llm-autoeval/main.py . $(($end-$start))
 elif [ "$BENCHMARK" == "me" ]; then
-    git clone https://github.com/EleutherAI/lm-evaluation-harness
+    git clone -b add-agieval https://github.com/dmahan93/lm-evaluation-harness
     cd lm-evaluation-harness
-    pip install -e ".[vllm,promptsource]"
-    pip install langdetect immutabledict
+    pip install -e .
+
     benchmark="agieval"
     python main.py \
         --model hf-causal \
@@ -74,7 +74,7 @@ elif [ "$BENCHMARK" == "me" ]; then
         --batch_size auto \
         --output_path ./${benchmark}.json
     benchmark="arc"
-    lm_eval --model vllm \
+    lm_eval --model hf-causal \
         --model_args pretrained=${MODEL},dtype=auto,gpu_memory_utilization=0.8,trust_remote_code=$TRUST_REMOTE_CODE \
         --tasks arc_challenge \
         --num_fewshot 25 \
