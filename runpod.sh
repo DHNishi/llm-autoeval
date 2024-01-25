@@ -60,6 +60,39 @@ if [ "$BENCHMARK" == "nous" ]; then
     echo "Elapsed Time: $(($end-$start)) seconds"
     
     python ../llm-autoeval/main.py . $(($end-$start))
+elif [ "$BENCHMARK" == "me" ]; then
+    git clone https://github.com/EleutherAI/lm-evaluation-harness
+    cd lm-evaluation-harness
+    pip install -e ".[vllm,promptsource]"
+    pip install langdetect immutabledict
+    benchmark="agieval"
+    python main.py \
+        --model hf-causal \
+        --model_args pretrained=$MODEL,trust_remote_code=$TRUST_REMOTE_CODE \
+        --tasks agieval_aqua_rat,agieval_logiqa_en,agieval_lsat_ar,agieval_lsat_lr,agieval_lsat_rc,agieval_sat_en,agieval_sat_en_without_passage,agieval_sat_math \
+        --device cuda:0 \
+        --batch_size auto \
+        --output_path ./${benchmark}.json
+    benchmark="arc"
+    lm_eval --model vllm \
+        --model_args pretrained=${MODEL},dtype=auto,gpu_memory_utilization=0.8,trust_remote_code=$TRUST_REMOTE_CODE \
+        --tasks arc_challenge \
+        --num_fewshot 25 \
+        --batch_size auto \
+        --output_path ./${benchmark}.json
+    benchmark="bbh-cot"
+    python main.py \
+        --model hf-causal \
+        --model_args pretrained=$MODEL,trust_remote_code=$TRUST_REMOTE_CODE \
+        --tasks bbh_cot_fewshot \
+        --device cuda:0 \
+        --batch_size auto \
+        --output_path ./${benchmark}.json
+
+    end=$(date +%s)
+    echo "Elapsed Time: $(($end-$start)) seconds"
+    
+    python ../llm-autoeval/main.py . $(($end-$start))
 
 elif [ "$BENCHMARK" == "openllm" ]; then
     git clone https://github.com/EleutherAI/lm-evaluation-harness
