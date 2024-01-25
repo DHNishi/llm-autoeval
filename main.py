@@ -26,7 +26,7 @@ def main(directory: str, elapsed_time: float) -> None:
     elif BENCHMARK == "nous":
         tasks = ["AGIEval", "GPT4All", "TruthfulQA", "Bigbench"]
     elif BENCHMARK == "me":
-        tasks = ["AGIEval", "ARC", "Bigbench"]
+        tasks = ["AGIEval", "ARC", "bbh-cot"]
     else:
         raise NotImplementedError(f"BENCHMARK should be 'openllm' or 'nous' (current value = {BENCHMARK})")
 
