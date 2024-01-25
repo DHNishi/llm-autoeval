@@ -54,6 +54,15 @@ def calculate_average(data, task):
             value = data["results"]["truthfulqa_mc"]["mc2"]
             return 0.0 if math.isnan(value) else value * 100
 
+
+    elif BENCHMARK == "me":
+        if task == "agieval":
+            return get_acc_norm(data)
+        if task == "arc":
+            return data["results"]["arc_challenge"]["acc_norm,none"] * 100
+        elif task == "bigbench":
+            return get_mcg(data)
+
     raise NotImplementedError(f"Could not find task {task} for benchmark {BENCHMARK}")
 
 
